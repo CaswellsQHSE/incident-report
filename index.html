@@ -114,14 +114,15 @@
       text-transform: uppercase;
     }
 
-    /* Countdown ring */
-    .countdown {
+    /* iOS install hint */
+    .install-hint {
       display: none;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: #888;
-      margin-top: 12px;
+      margin-top: 14px;
+      line-height: 1.5;
     }
-    .countdown.visible { display: block; }
+    .install-hint.visible { display: block; }
   </style>
 </head>
 <body>
@@ -139,33 +140,23 @@
     <h1>Incident &amp; Near Miss Report</h1>
     <p>Use this form to report any incident, accident, near miss, or unsafe condition. Reports are sent directly to the QHSE team.</p>
 
-    <a class="btn" id="formBtn" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=OhDCfWrJdUGZM9I_f6mtmjYaKB-AedJFpW5p97gXbYlURUIyR09NMUlRWklCV0JXTU5ZUzU3TjBTOS4u">
+    <a class="btn" id="formBtn" href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=OhDCfWrJdUGZM9I_f6mtmjYaKB-AedJFpW5p97gXbYlURUIyR09NMUlRWklCV0JXTU5ZUzU3TjBTOS4u" target="_blank" rel="noopener noreferrer">
       Open Report Form
     </a>
-    <div class="countdown" id="countdown">Opening form in <span id="secs">3</span>s…</div>
+    <div class="install-hint" id="installHint">
+      📲 To add to your home screen:<br>
+      tap <strong>Share</strong> → <strong>Add to Home Screen</strong>
+    </div>
   </div>
 
   <p class="brand">Caswells Group · QHSE</p>
 
   <script>
-    // On mobile, show a brief countdown then auto-redirect.
-    // On desktop, the button remains for manual click (useful for testing).
-    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-    const TARGET = "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=OhDCfWrJdUGZM9I_f6mtmjYaKB-AedJFpW5p97gXbYlURUIyR09NMUlRWklCV0JXTU5ZUzU3TjBTOS4u";
-
-    if (isMobile) {
-      const cd = document.getElementById('countdown');
-      const secsEl = document.getElementById('secs');
-      cd.classList.add('visible');
-      let s = 3;
-      const timer = setInterval(() => {
-        s--;
-        secsEl.textContent = s;
-        if (s <= 0) {
-          clearInterval(timer);
-          window.location.replace(TARGET);
-        }
-      }, 1000);
+    // Show "Add to Home Screen" hint on iOS Safari only
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isInStandalone = window.navigator.standalone === true;
+    if (isIOS && !isInStandalone) {
+      document.getElementById('installHint').classList.add('visible');
     }
   </script>
 
